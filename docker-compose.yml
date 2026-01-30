@@ -24,8 +24,8 @@ services:
     build: src/flight/
     command: ./flight_service
     depends_on:
-      - postgres:
-          condition: service_healthy
+      postgres:
+        condition: service_healthy
     ports:
       - "8060:8060"
     networks:
@@ -35,8 +35,8 @@ services:
     build: src/ticket/
     command: ./ticket_service
     depends_on:
-      - postgres:
-          condition: service_healthy
+      postgres:
+        condition: service_healthy
     ports:
       - "8070:8070"
     networks:
@@ -46,8 +46,8 @@ services:
     build: src/bonus/
     command: ./bonus_service
     depends_on:
-      - postgres:
-          condition: service_healthy
+      postgres:
+        condition: service_healthy
     ports:
       - "8050:8050"
     networks:
