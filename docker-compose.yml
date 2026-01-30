@@ -13,8 +13,48 @@ services:
       - ./postgres/:/docker-entrypoint-initdb.d/
     ports:
       - "5432:5432"
-
-# TODO добавить сервисы
-
+networks:
+      - microservice-net
+  gateway:
+    build: src/gateway/
+    command: ./gateway_service
+    depends_on:
+      - flight
+      - ticket
+      - bonus
+    ports:
+      - "8080:8080"
+    networks:
+      - microservice-net
+  flight:
+    build: src/flight/
+    command: ./flight_service
+    depends_on:
+      - postgres
+    ports:
+      - "8060:8060"
+    networks:
+      - microservice-net
+  ticket:
+    build: src/ticket/
+    command: ./ticket_service
+    depends_on:
+      - postgres
+    ports:
+      - "8070:8070"
+    networks:
+      - microservice-net
+  bonus:
+    build: src/bonus/
+    command: ./bonus_service
+    depends_on:
+      - postgres
+    ports:
+      - "8050:8050"
+    networks:
+      - microservice-net
 volumes:
   db-data:
+  
+networks:
+  microservice-net:

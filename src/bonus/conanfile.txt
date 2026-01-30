@@ -1,0 +1,10 @@
+[requires]
+asio/1.29.0
+libpqxx/7.10.5
+crowcpp-crow/1.3.0
+nlohmann_json/3.12.0
+[generators]
+CMakeDeps
+CMakeToolchain
+[layout]
+cmake_layout
