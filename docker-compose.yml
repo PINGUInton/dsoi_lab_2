@@ -15,44 +15,60 @@ services:
       - "5432:5432"
     networks:
       - microservice-net
-  gateway:
-    build: src/gateway/
-    command: ./gateway_service
-    depends_on:
-      - flight
-      - ticket
-      - bonus
-    ports:
-      - "8080:8080"
-    networks:
-      - microservice-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
   flight:
     build: src/flight/
     command: ./flight_service
     depends_on:
-      - postgres
+      - postgres:
+        condition: service_healthy
     ports:
       - "8060:8060"
     networks:
       - microservice-net
+    restart: on-failure
   ticket:
     build: src/ticket/
     command: ./ticket_service
     depends_on:
-      - postgres
+      - postgres:
+        condition: service_healthy
     ports:
       - "8070:8070"
     networks:
       - microservice-net
+    restart: on-failure
   bonus:
     build: src/bonus/
     command: ./bonus_service
     depends_on:
-      - postgres
+      - postgres:
+        condition: service_healthy
     ports:
       - "8050:8050"
     networks:
       - microservice-net
+    restart: on-failure
+  gateway:
+    build: src/gateway/
+    command: ./gateway_service
+    depends_on:
+      depends_on:
+      flight:
+        condition: service_started
+      ticket:
+        condition: service_started
+      bonus:
+        condition: service_started
+    ports:
+      - "8080:8080"
+    networks:
+      - microservice-net
+    restart: unless-stopped
 volumes:
   db-data:
   
