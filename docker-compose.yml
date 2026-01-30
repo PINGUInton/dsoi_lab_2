@@ -57,9 +57,9 @@ services:
     build: src/gateway/
     command: ./gateway_service
     depends_on:
-      -flight
-      -ticket
-      -bonus
+      - flight
+      - ticket
+      - bonus
     ports:
       - "8080:8080"
     networks:
