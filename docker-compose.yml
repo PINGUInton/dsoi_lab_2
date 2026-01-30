@@ -13,7 +13,7 @@ services:
       - ./postgres/:/docker-entrypoint-initdb.d/
     ports:
       - "5432:5432"
-networks:
+    networks:
       - microservice-net
   gateway:
     build: src/gateway/
